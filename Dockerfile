@@ -1,10 +1,14 @@
 FROM quay.octanner.io/base/oct-tomcat
 
-COPY . /app/
+RUN ["apt-get","update"]
+RUN ["apt-get", "install", "-y", "maven"]
 
+COPY . /app/
 WORKDIR /app
 
-RUN mvn deploy && \
+CMD ["tomcat/bin/startup.sh"]
+
+RUN mvn package && \
     cp target/testTomcat-0.1.war $CATALINA_HOME/webapps/ 
    
 WORKDIR /
